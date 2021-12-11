@@ -1,5 +1,6 @@
 from os import system
 from time import sleep
+from copy import deepcopy
 
 system("cls")
 
@@ -7,7 +8,7 @@ ADJACENTS = ((-1 - 1j), (0 - 1j), (1 - 1j), (-1 + 0j), (1 + 0j), (-1 + 1j), (0 +
 
 
 def print_animation(step, flashes, part_one):
-    a = (
+    tab = (
         ["\033c"]
         + list(
             "    "
@@ -19,15 +20,38 @@ def print_animation(step, flashes, part_one):
         )
         + ["\n"]
     )
-    a[1] += f"    \033[93mstep: {step}\033[0m"
-    a[3] += f"    \033[93mtotal flashes: {flashes}\033[0m"
-    a[5] += f"    \033[96manswer part one: {part_one if part_one else ''}\033[0m"
-    a[7] += f"    \033[36manswer part two: {step if all(v == 0 for v in octopuses.values()) else '' }\033[0m"
-    print("\n".join(a))
-    if step < 20:
-        sleep(1 - 0.9 * (step - 1) / 20)
+    anim = deepcopy(tab)
+    anim[1] += f"    \033[93mstep: {step}\033[0m"
+    anim[3] += f"    \033[93mtotal flashes: {flashes}\033[0m"
+    if part_one:
+        if step <= 120 and step %2 ==0:
+            anim[5] += f"    \033[96manswer part one: {part_one}\033[0m"
+        elif step <= 120 and step %2 ==1:
+            anim[5] += f"    \033[36manswer part one: {part_one}\033[0m"
+        else:
+            anim[5] += f"    \033[96manswer part one: {part_one}\033[0m"
     else:
-        sleep(0.1)
+        anim[5] += f"    \033[96manswer part one: \033[0m"
+
+    if all(v == 0 for v in octopuses.values()):
+        for i in range(11):
+            if i % 2 == 0:
+                anim[7] = tab[7] + f"    \033[36manswer part two: {step}\033[0m"
+            else:
+                anim[7] = tab[7] + f"    \033[96manswer part two: {step}\033[0m"
+            print("\n".join(anim))
+            sleep(0.05)
+    else:
+        anim[7] += f"    \033[36manswer part two: \033[0m"
+        print("\n".join(anim))
+        if step <= 10:
+            sleep(1 - 0.95 * (step - 1) / 10)
+        elif step <= 100:
+            sleep(0.05)
+        elif step <= 120:
+            sleep(0.05 - 0.04 * (step - 100) / 20)
+        else:
+            sleep(0.01)
 
 
 def compute_step():
