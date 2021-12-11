@@ -1,6 +1,6 @@
+from copy import deepcopy
 from os import system
 from time import sleep
-from copy import deepcopy
 
 system("cls")
 
@@ -24,14 +24,14 @@ def print_animation(step, flashes, part_one):
     anim[1] += f"    \033[93mstep: {step}\033[0m"
     anim[3] += f"    \033[93mtotal flashes: {flashes}\033[0m"
     if part_one:
-        if step <= 120 and step %2 ==0:
+        if step <= 120 and step % 2 == 0:
             anim[5] += f"    \033[96manswer part one: {part_one}\033[0m"
-        elif step <= 120 and step %2 ==1:
+        elif step <= 120 and step % 2 == 1:
             anim[5] += f"    \033[36manswer part one: {part_one}\033[0m"
         else:
             anim[5] += f"    \033[96manswer part one: {part_one}\033[0m"
     else:
-        anim[5] += f"    \033[96manswer part one: \033[0m"
+        anim[5] += "    \033[96manswer part one: \033[0m"
 
     if all(v == 0 for v in octopuses.values()):
         for i in range(11):
@@ -42,7 +42,7 @@ def print_animation(step, flashes, part_one):
             print("\n".join(anim))
             sleep(0.05)
     else:
-        anim[7] += f"    \033[36manswer part two: \033[0m"
+        anim[7] += "    \033[36manswer part two: \033[0m"
         print("\n".join(anim))
         if step <= 10:
             sleep(1 - 0.95 * (step - 1) / 10)
